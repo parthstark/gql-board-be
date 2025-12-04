@@ -26,6 +26,8 @@ Server runs on `http://localhost:4000`
 
 Visit `http://localhost:4000` to access the GraphQL playground and explore the API.
 
+<img width="1440" height="776" alt="playground" src="https://github.com/user-attachments/assets/4f37254f-79cc-4c31-9e66-2152bbc2d131" />
+
 ## Example Queries
 
 ```graphql
