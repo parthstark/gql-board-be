@@ -1,4 +1,5 @@
 import { ApolloServer } from "apollo-server-micro";
+import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 import { db } from "../../src/db";
 import { apolloConfig } from "../../src/apollo-config";
 
@@ -9,6 +10,7 @@ const server = new ApolloServer({
     return { db };
   },
   introspection: true,
+  plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
   cache: "bounded",
   persistedQueries: false,
 });

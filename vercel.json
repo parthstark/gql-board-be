@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/graphql.ts": {
+    "api/graphql/index.ts": {
       "maxDuration": 10
     }
   },
