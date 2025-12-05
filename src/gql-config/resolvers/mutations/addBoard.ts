@@ -1,7 +1,7 @@
 import { UserInputError } from "apollo-server";
 import { db } from "../../../db";
 import { Board } from "../../../models";
-import { v4 as uuid } from "uuid";
+import { randomUUID } from "crypto";
 
 export const addBoard = async (
   _: any,
@@ -30,7 +30,7 @@ export const addBoard = async (
   }
 
   const newBoard: Board = {
-    id: uuid(),
+    id: randomUUID(),
     title,
     key,
     description,

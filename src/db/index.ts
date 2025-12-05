@@ -1,21 +1,46 @@
-import { Low } from "lowdb";
-import { JSONFile } from "lowdb/node";
 import { DBData } from "../models";
-import { existsSync, readFileSync } from "fs";
-import { join } from "path";
+import mockData from "./mock-data.json";
 
-const adapter = new JSONFile<DBData>("./src/db/db.json");
+class DatabaseWrapper {
+  private lowDb?: any;
+  private memoryData?: DBData;
+  private isServerless: boolean;
 
-const getMockData = (): DBData => {
-  const mockDataPath = join(__dirname, "mock-data.json");
-  return JSON.parse(readFileSync(mockDataPath, "utf-8"));
-};
+  constructor() {
+    this.isServerless = process.env.IS_SERVERLESS === "true";
 
-const defaultData = existsSync("./src/db/db.json") ? {
-  users: [],
-  boards: [],
-  tasks: [],
-  comments: [],
-} : getMockData();
+    if (this.isServerless) {
+      this.memoryData = mockData as DBData;
+    } else {
+      this.initLowDb();
+    }
+  }
 
-export const db = new Low<DBData>(adapter, defaultData);
+  private async initLowDb() {
+    const { Low } = await import("lowdb");
+    const { JSONFile } = await import("lowdb/node");
+    const adapter = new JSONFile<DBData>("./src/db/db.json");
+    this.lowDb = new Low<DBData>(adapter, mockData as DBData);
+  }
+
+  get data(): DBData | null {
+    if (this.isServerless) {
+      return this.memoryData || null;
+    }
+    return this.lowDb?.data || null;
+  }
+
+  async read(): Promise<void> {
+    if (!this.isServerless && this.lowDb) {
+      await this.lowDb.read();
+    }
+  }
+
+  async write(): Promise<void> {
+    if (!this.isServerless && this.lowDb) {
+      await this.lowDb.write();
+    }
+  }
+}
+
+export const db = new DatabaseWrapper();

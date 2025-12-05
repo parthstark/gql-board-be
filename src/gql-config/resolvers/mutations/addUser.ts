@@ -1,7 +1,7 @@
 import { UserInputError } from "apollo-server";
 import { db } from "../../../db";
 import { User } from "../../../models";
-import { v4 as uuid } from "uuid";
+import { randomUUID } from "crypto";
 
 export const addUser = async (
   _: any,
@@ -15,7 +15,7 @@ export const addUser = async (
   }
 
   const newUser: User = {
-    id: uuid(),
+    id: randomUUID(),
     name,
     email,
   };

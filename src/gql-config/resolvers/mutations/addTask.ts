@@ -1,7 +1,7 @@
 import { UserInputError } from "apollo-server";
 import { db } from "../../../db";
 import { Task } from "../../../models";
-import { v4 as uuid } from "uuid";
+import { randomUUID } from "crypto";
 
 export const addTask = async (
   _: any,
@@ -53,7 +53,7 @@ export const addTask = async (
   const taskKey = `${boardKeyUpper}-${board.taskCounter}`;
 
   const newTask: Task = {
-    id: uuid(),
+    id: randomUUID(),
     key: taskKey,
     title,
     boardId: board.id,

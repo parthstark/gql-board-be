@@ -3,5 +3,14 @@
     "api/graphql.ts": {
       "maxDuration": 10
     }
-  }
+  },
+  "env": {
+    "IS_SERVERLESS": "true"
+  },
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/api/graphql"
+    }
+  ]
 }

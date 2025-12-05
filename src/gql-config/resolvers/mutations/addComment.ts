@@ -1,7 +1,7 @@
 import { UserInputError } from "apollo-server";
 import { db } from "../../../db";
 import { Comment } from "../../../models";
-import { v4 as uuid } from "uuid";
+import { randomUUID } from "crypto";
 
 export const addComment = async (
   _: any,
@@ -24,7 +24,7 @@ export const addComment = async (
   }
 
   const newComment: Comment = {
-    id: uuid(),
+    id: randomUUID(),
     taskId: task.id,
     userId: author.id,
     text,
